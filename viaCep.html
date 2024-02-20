@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIA CEP</title>
+</head>
+<body>
+
+    <div id="divPai">
+        <label for="CEP">CEP</label>
+        <input type="text" name="" id="inputCep" maxlength="8">        
+        <input type="button" value="buscar" onclick="buscarCep()">
+    </div>
+
+    <div id="divLogradouro" style="padding-top: 2%;">
+        <label for="logradouro">Logradouro:</label>
+        <input type="text" name="" id="inputLogradoro" readonly>
+    </div>
+    <div id="divBairro" style="padding-top: 2%;">
+        <label for="Bairro">Bairro:</label>
+        <input type="text" name="" id="inputBairro" readonly>
+    </div>
+    <div id="divCidade" style="padding-top: 2%;">
+        <label for="Cidade">Cidade:</label>
+        <input type="text" name="" id="inputCidade" readonly>
+    </div>
+    <div id="divUF" style="padding-top: 2%;">
+        <label for="UF">UF:</label>
+        <input type="text" name="" id="inputUF" readonly>
+    </div>
+
+    <div id="divReset" style="padding-top: 2%;">
+        <input type="button" value="RESETAR" onclick="resetar()">
+    </div>
+    <script>
+    const buscarCep = () =>{
+        let cep = document.querySelector("#inputCep").value;
+        console.log(cep);
+
+        let url = `https://viacep.com.br/ws/${cep}/json/`;
+        fetch(url)
+        .then( objeto => objeto.json())
+        .then( json => {
+            //Seu código para tratamento do json vem aqui
+            /* -------------- JSON NO CONSOLE ------------------------ */
+            console.log(json);
+            console.log(json.logradouro)
+            
+            /* --------------- LOGRADOURO ----------------------- */
+            let inputLogradoro = document.querySelector("#inputLogradoro")
+            inputLogradoro.value = json.logradouro
+
+            /* --------------- BAIRRO ----------------------- */
+            let inputBairro = document.querySelector("#inputBairro")
+            inputBairro.value = json.bairro
+
+            /* --------------- CIDADE ----------------------- */
+            let inputCidade = document.querySelector("#inputCidade")
+            inputCidade.value = json.localidade
+
+            /* --------------- UF ----------------------- */
+            let inputUF = document.querySelector("#inputUF")
+            inputUF.value = json.uf
+        })
+    }
+    const resetar = () => {
+        let inputsText = document.querySelectorAll("input[type='text']")
+
+        for (input of inputsText){
+            input.value = ""
+        }
+    }      
+
+    </script>
+</body>
+</html>
